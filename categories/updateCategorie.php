@@ -1,39 +1,38 @@
 
 <?php
-include 'db/conect.php';
+include '../db/conect.php';
 
 $id = isset($_GET['updateid']) ? $_GET['updateid'] : null; 
 
-$AfficherReq = "SELECT * FROM users WHERE user_id=$id";
+$AfficherReq = "SELECT * FROM categorie WHERE categorie_id=$id";
 $AfficherResult = mysqli_query($db, $AfficherReq);
 
 if ($AfficherResult) {
     while ($row = mysqli_fetch_assoc($AfficherResult)) {
-        $id = $row['user_id'];
-        $name = $row['u_name'];
-        $email = $row['u_email'];
+        $nomCategorie = $row['nom_categorie'];
+       
     }
 }
 
 if ($id !== null) {
     
     if (isset($_POST["updatesubmit"])) {
-        $user_name = $_POST["userNom"];
-        $user_email = $_POST["userEmail"];
+        $categorie_name = $_POST["nameCategorie"];
+        
      
-        $req = "UPDATE users SET u_name='$user_name',u_email='$user_email' WHERE user_id=$id";
+        $req = "UPDATE categorie SET nom_categorie='$categorie_name' WHERE categorie_id=$id";
         $result = mysqli_query($db, $req);
         
         if ($result) {
-            header("Location: index.php");
-            echo 'Updated successfully';
+            header("Location: categories.php");
+           
         } else {
             die(mysqli_error($db));
         }
     }
    
 } else {
-    echo 'nooooooooooo';
+   
     header("Location: index.php");
 }
 
@@ -57,25 +56,22 @@ if ($id !== null) {
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
 </head>
-<body>
+<body style="height:700px">
 <div class="container col-6">
         <div class="modal-dialog">
-            <div class="modal-content">
-                <form action="" method="post" class="formedite">
+            <div class="modal-content  ">
+                <form action="" method="post" class="formedite my-auto">
                     <div class="modal-header">                        
                         <h4 class="modal-title">Update Employee</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="userNom">Name</label>
-                            <input type="text" class="form-control" name="userNom" value="<?php echo $name ?>" required>
+                    <div class="modal-body ">
+                        <div class="form-group d-flex justify-content-center align-items-center gap-3">
+                            <label for="nameCategorie">nameCategorie</label>
+                            <input type="text" class="form-control" name="nameCategorie" value="<?php echo  $nomCategorie ?>" required>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="userEmail">Email</label>
-                            <input type="email" class="form-control" value="<?php echo $email ?>" name="userEmail" required>
-                        </div>
+                     
                     </div>
                     <div class="modal-footer">
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
