@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +13,6 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="../stayle.css">
-
 <script>
 $(document).ready(function(){
 	// Activate tooltip
@@ -55,24 +52,38 @@ if (isset($_POST["subSubmit"])) {
 
         $categorie_req = "SELECT categorie_id FROM categorie WHERE nom_categorie='$selectedCategorie'";
         $aff_categorie_req = mysqli_query($db, $categorie_req);
-        $result_categorie_req = mysqli_fetch_assoc($aff_categorie_req);
 
-        // Use prepared statements to prevent SQL injection
-        $req = "INSERT INTO subcategory (nom_sub_categorie, categorie_id) VALUES (?, ?)";
-        $stmt = mysqli_prepare($db, $req);
-        mysqli_stmt_bind_param($stmt, 'si', $subName, $result_categorie_req['categorie_id']);
-        $result = mysqli_stmt_execute($stmt);
+        if ($aff_categorie_req) {
+            // Fetch the result as an  array
+            $result_categorie_req = mysqli_fetch_assoc($aff_categorie_req);
+            $selectedCategorieId = $result_categorie_req['categorie_id'];
 
-        if ($result) {
-            // echo "Record inserted successfully.";
-        } else {
-            echo "Error: " . mysqli_error($db);
+            $checkNumRows = "SELECT COUNT(nom_sub_categorie) AS num_rows FROM subcategory WHERE nom_sub_categorie='$subName'";
+            $AffiCheckNumRows = mysqli_query($db, $checkNumRows);
+
+            if ($AffiCheckNumRows) {
+                // Fetch the result as an  array
+                $row = mysqli_fetch_assoc($AffiCheckNumRows);
+                $numRows = $row["num_rows"];
+
+                if ($numRows == 0) {
+                    $req = "INSERT INTO subcategory (nom_sub_categorie, categorie_id) VALUES ('$subName', '$selectedCategorieId')";
+                    $result = mysqli_query($db, $req);
+
+                    if ($result) {
+                       
+                        header("Location: subcategories.php");
+                        exit();
+                    } else {
+                        echo "Error: " . mysqli_error($db);
+                    }
+                }
+            }
         }
-
-        mysqli_stmt_close($stmt);
     }
 }
 ?>
+
 
 <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
@@ -110,10 +121,7 @@ if (isset($_POST["subSubmit"])) {
 			<div class="table-title">
 				<div class="row">
 					<div class="col-sm-6">
-						<h2>Manage <b>Users 
-							<?php // Now $selectedCategorie contains the value of the selected option
-        echo "You selected: " . $selectedCategorie;?>
-						</b></h2>
+						<h2>Manage <b>Users </b></h2>
 					</div>
 					<div class="col-sm-6">
 						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New User</span></a>
@@ -159,8 +167,8 @@ if (isset($_POST["subSubmit"])) {
 							<td>'.$subName.'</td>
 							<td>'.$cat_name.'</td>
 							<td>
-								<a href="update.php? updateid='.$sub_id.'" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-								<a href="delet.php?deleteid='.$sub_id.'" class="delete" ><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+								<a href="updateSub.php? updateid='.$sub_id.'" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+								<a href="deletSub.php?deleteid='.$sub_id.'" class="delete" ><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 							</td>
 							
 						</tr>';
@@ -168,13 +176,7 @@ if (isset($_POST["subSubmit"])) {
 						}
 						
 					}
-
-					
-					?>
-					
-				
-					
-					
+					?>	
 				</tbody>
 			</table>
 			
@@ -209,11 +211,7 @@ if (isset($_POST["subSubmit"])) {
 
 
 ?>
-
-
-
-
-										
+						
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
