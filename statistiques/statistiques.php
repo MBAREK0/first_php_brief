@@ -95,6 +95,8 @@ mysqli_close($db);
     <?php require '../sidebar.php' ?>
 
 <div class="container d-flex gap-3 mt-3 " >
+<img src="../picturs/R.jpg" style =" max-width:80%"alt="statistique">
+  <div>
 <div class="card text-bg-primary mb-3" style="width: 18rem; text-align:center;">
   <div class="card-header  fs-5 ">USERS</div>
   <div class="card-body">
@@ -131,6 +133,7 @@ mysqli_close($db);
 
 </div>
 
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 </body>
