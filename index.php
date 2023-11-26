@@ -14,11 +14,11 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="../stayle.css">
+<link rel="stylesheet" href="stayle.css">
 </head>
 <body>
 	<?php
-require '../db/conect.php';
+require 'db/conect.php';
    if(isset($_POST["userSubmit"])){
 	if( !empty($_POST["userNom"]) && !empty($_POST["userEmail"])){
 		$user_name = $_POST["userNom"];
@@ -30,8 +30,25 @@ require '../db/conect.php';
 
 	?>
   <!-- include nav and side bar here  -->
-  <?php require '../nav.php' ?>
-    <?php require '../sidebar.php' ?>
+  <?php require 'nav.php' ?>
+   <!-- sidebar -->
+   <div class="offcanvas offcanvas-start" style="width: 11rem !important; background: #435d7d" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="staticBackdropLabel" style="color:white;">TABLES</h5>
+    <button type="button" class="btn-close " style="color:white;" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <ul class="data-tables">
+	<li><a href="users/index.php"> users </a></li>
+	<li><a href="subcategories/subcategories.php"> subcategorie </a></li>
+	<li><a href="categories/categories.php"> categorie</a></li>
+	<li><a href="ressources/ressources.php">ressorces</a></li>
+    <li><a href="statistiques/statistiques.php">statistiques</a></li>
+  </ul>  
+  <div class="offcanvas-body">
+    
+  </div>
+</div>
+<!-- tableau -->
 <div class="container-xl">
 	<div class="table-responsive">
 		<div class="table-wrapper col-6 container">
@@ -82,8 +99,8 @@ require '../db/conect.php';
 							<td>'.$name.'</td>
 							<td>'.$email.'</td>
 							<td>
-								<a href="update.php? updateid='.$id.'" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-								<a href="delet.php?deleteid='.$id.'" class="delete" ><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+								<a href="users/update.php? updateid='.$id.'" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+								<a href="users/delet.php?deleteid='.$id.'" class="delete" ><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 							</td>
 							
 						</tr>';

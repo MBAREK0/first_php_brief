@@ -4,7 +4,7 @@
     <button type="button" class="btn-close " style="color:white;" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <ul class="data-tables">
-	<li><a href="../users/index.php"> users </a></li>
+	<li><a href="../index.php"> users </a></li>
 	<li><a href="../subcategories/subcategories.php"> subcategorie </a></li>
 	<li><a href="../categories/categories.php"> categorie</a></li>
 	<li><a href="../ressources/ressources.php">ressorces</a></li>

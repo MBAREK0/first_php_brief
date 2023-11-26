@@ -25,7 +25,7 @@ if ($id !== null) {
         $result = mysqli_query($db, $req);
         
         if ($result) {
-            header("Location: index.php");
+            header("Location: ../index.php");
             echo 'Updated successfully';
         } else {
             die(mysqli_error($db));
@@ -34,7 +34,7 @@ if ($id !== null) {
    
 } else {
    
-    header("Location: index.php");
+    header("Location: ../index.php");
 }
 
 ?>
