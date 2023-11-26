@@ -1,5 +1,4 @@
 
-<!-- look at the line 32 there is a big motherfucker problem -->
 <?php
 include '../db/conect.php';
 
@@ -28,41 +27,47 @@ if ($id !== null) {
     
     if (isset($_POST["updatesubmit"])) {
 
-        $selected_sub_categorie = $_POST["subcategorieSelect"];
         $selected_categorie = $_POST['categorieSelect'];
-
-        echo'>>>>>>>>>>>>>>>>>>> why this varible has a int value im sure thats i put to it a string value ?? '.$selectedCategorie;
-        $CategorieID_req="SELECT  categorie_id FROM categorie WHERE nom_categorie= '$selectedCategorie'";
+        $selected_sub_categorie = $_POST['subcategorieSelect'];
+        
+        // Fetching category ID
+        $CategorieID_req = "SELECT categorie_id FROM categorie WHERE nom_categorie = '$selected_categorie'";
         $AffCatID = mysqli_query($db, $CategorieID_req);
-       if( $AffCatID ){
-        $rowCI = mysqli_fetch_assoc($AffCatID);
-        $categorie_Id=$rowCI['categorie_id'];
-       }
-      
-       $SubCategorieID_req="SELECT  sub_cat_id FROM subcategory WHERE nom_sub_categorie= '$selected_sub_categorie'";
+        
+        if ($AffCatID) {
+            $rowCI = mysqli_fetch_assoc($AffCatID);
+            $categorie_Id = $rowCI['categorie_id'];
+        } else {
+            // Handle the case where the query failed
+            echo "Error fetching category ID: " . mysqli_error($db);
+        }
+        
+        // Fetching sub-category ID
+        $SubCategorieID_req = "SELECT sub_cat_id FROM subcategory WHERE nom_sub_categorie = '$selected_sub_categorie'";
         $AffCatSubID = mysqli_query($db, $SubCategorieID_req);
-       if( $rowSI = mysqli_fetch_assoc($AffCatSubID)){
-        $Subcategorie_Id=$rowSI['sub_cat_id'];
-       }
-       
-       
-     
-        $req = "UPDATE ressources SET sub_cat_id='$Subcategorie_Id',categorie_id='$categorie_Id' WHERE ressource_id =$id";
+        
+        if ($AffCatSubID) {
+            $rowSI = mysqli_fetch_assoc($AffCatSubID);
+            $Subcategorie_Id = $rowSI['sub_cat_id'];
+        } else {
+            // Handle the case where the query failed
+            echo "Error fetching sub-category ID: " . mysqli_error($db);
+        }
+        
+        // Update query
+        $req = "UPDATE ressources SET sub_cat_id='$Subcategorie_Id', categorie_id='$categorie_Id' WHERE ressource_id =$id";
         $result = mysqli_query($db, $req);
         
         if ($result) {
-            header("Location:subcategories.php ");
+            header("Location: ressources.php");
             echo 'Updated successfully';
-        } else {   
-                die(mysqli_error($db));
+        } else {
+            // Handle the case where the update query failed
+            echo 'Update failed: ' . mysqli_error($db);
         }
-    }
-} else {
-        die(mysqli_error($db));
-}
+    }}
 
 ?>
-
 
 
 <!DOCTYPE html>
@@ -118,13 +123,14 @@ if ($id !== null) {
                   }
                   echo '</select>';
 	              mysqli_close($db);
+                 
 
 ?>
 						
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-success" value="Add" name="updatesubmit">
+					<input type="submit" class="btn btn-success" value="update" name="updatesubmit">
 				</div>
 			</form>
 		</div>
